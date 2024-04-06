@@ -55,7 +55,6 @@ class EarlyStopper:
           validation_loss: float
           ) -> bool:
         if validation_loss < self.min_validation_loss:
-            self.min_validation_loss = validation_loss
             self.counter = 0
         elif validation_loss > (self.min_validation_loss + self.min_delta):
             self.counter += 1
@@ -63,58 +62,59 @@ class EarlyStopper:
                 return True
         return False
     
-class Plotter:
-  def __init__(self):
-    pass  
 
-  def plot_train_loss(
-        self, 
+class Plotter:
+    def __init__(self):
+        pass  
+    
+    @staticmethod
+    def plot_train_loss(
         train_losses: List[float], 
         epochs: List[int]
-        ) -> plt:
-    sns.lineplot(x=epochs, y=train_losses, label='Train Loss')
-    plt.xlabel('Epochs')
-    plt.ylabel('Loss')
-    plt.title('Train Loss vs Epochs')
-    plt.legend()
-    plt.show()
+        ) -> None:
+        sns.lineplot(x=epochs, y=train_losses, label='Train Loss')
+        plt.xlabel('Epochs')
+        plt.ylabel('Loss')
+        plt.title('Train Loss vs Epochs')
+        plt.legend()
+        plt.show()
 
-  def plot_train_accuracy(
-        self, 
+    @staticmethod
+    def plot_train_accuracy( 
         train_accuracies: List[float], 
         epochs: List[int]
-        ) -> plt:
-    sns.lineplot(x=epochs, y=train_accuracies, label='Train Accuracy')
-    plt.xlabel('Epochs')
-    plt.ylabel('Accuracy')
-    plt.title('Train Accuracy vs Epochs')
-    plt.legend()
-    plt.show()
+        ) -> None:
+        sns.lineplot(x=epochs, y=train_accuracies, label='Train Accuracy')
+        plt.xlabel('Epochs')
+        plt.ylabel('Accuracy')
+        plt.title('Train Accuracy vs Epochs')
+        plt.legend()
+        plt.show()
 
-  def plot_loss_comparison(
-        self, 
+    @staticmethod
+    def plot_loss_comparison(
         train_losses: List[float], 
         val_losses: List[float], 
         epochs: List[int]
-        ) -> plt:
-    sns.lineplot(x=epochs, y=train_losses, label='Train Loss')
-    sns.lineplot(x=epochs, y=val_losses, label='Validation Loss')
-    plt.xlabel('Epochs')
-    plt.ylabel('Loss')
-    plt.title('Train Loss vs Validation Loss')
-    plt.legend()
-    plt.show()
+        ) -> None:
+        sns.lineplot(x=epochs, y=train_losses, label='Train Loss')
+        sns.lineplot(x=epochs, y=val_losses, label='Validation Loss')
+        plt.xlabel('Epochs')
+        plt.ylabel('Loss')
+        plt.title('Train Loss vs Validation Loss')
+        plt.legend()
+        plt.show()
 
-  def plot_accuracy_comparison(
-        self, 
+    @staticmethod
+    def plot_accuracy_comparison(
         train_accuracies: List[float], 
         val_accuracies: List[float], 
         epochs: List[int]
-        ) -> plt:
-    sns.lineplot(x=epochs, y=train_accuracies, label='Train Accuracy')
-    sns.lineplot(x=epochs, y=val_accuracies, label='Validation Accuracy')
-    plt.xlabel('Epochs')
-    plt.ylabel('Accuracy')
-    plt.title('Train Accuracy vs Validation Accuracy')
-    plt.legend()
-    plt.show()
+        ) -> None:
+        sns.lineplot(x=epochs, y=train_accuracies, label='Train Accuracy')
+        sns.lineplot(x=epochs, y=val_accuracies, label='Validation Accuracy')
+        plt.xlabel('Epochs')
+        plt.ylabel('Accuracy')
+        plt.title('Train Accuracy vs Validation Accuracy')
+        plt.legend()
+        plt.show()
