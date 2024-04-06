@@ -125,7 +125,7 @@ class Train:
                 break
         
 
-        Plotter.plot_train_loss(train_losses=train_loss_history, epochs=range(1, len(train_loss_history) + 1))
-        Plotter.plot_train_accuracy(train_accuracies=train_acc_history, epochs=range(1, len(train_acc_history) + 1))
-        Plotter.plot_loss_comparison(train_losses=train_loss_history, val_losses=val_loss_history, epochs=range(1, len(val_loss_history) + 1))
-        Plotter.plot_accuracy_comparison(train_accuracies=train_acc_history, val_accuracies=val_acc_history, epochs=range(1, len(train_acc_history) + 1))
+        Plotter.plot_train_loss(train_losses=train_loss_history, epochs=range(1, len(train_loss_history) + 1), model_name=model_name)
+        Plotter.plot_train_accuracy(train_accuracies=train_acc_history, epochs=range(1, len(train_acc_history) + 1), model_name=model_name)
+        Plotter.plot_loss_comparison(train_losses=train_loss_history, val_losses=val_loss_history, epochs=range(1, len(val_loss_history) + 1), model_name=model_name)
+        Plotter.plot_accuracy_comparison(train_accuracies=train_acc_history, val_accuracies=val_acc_history, epochs=range(1, len(train_acc_history) + 1), model_name=model_name)
