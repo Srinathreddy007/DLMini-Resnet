@@ -16,11 +16,10 @@ class LoadData:
             torchvision.transforms.Normalize((0.1307,), (0.3081,))
         ])
         self.valid_split = 0.1
-        self.BATCH_SIZE_TRAIN = 100
+        self.BATCH_SIZE_TRAIN = 50
         self.BATCH_SIZE_TEST = 1000
   
     def _get_data(self):
-    # Load the CIFAR-10 training set
         self.train_set = torchvision.datasets.CIFAR10(
             self.data_path, 
             train=True, 
@@ -28,7 +27,6 @@ class LoadData:
             transform=self.transforms
         )
 
-        # Split the training set into training and validation sets
         self.train_len = int(len(self.train_set) * (1 - self.valid_split))
         train_indices = torch.arange(self.train_len)
         val_indices = torch.arange(self.train_len, len(self.train_set))
@@ -36,7 +34,6 @@ class LoadData:
         train_subset = Subset(self.train_set, train_indices)
         self.val_subset = Subset(self.train_set, val_indices)
 
-        # Create data loaders for training and validation sets
         train_loader = DataLoader(
             train_subset, 
             batch_size=self.BATCH_SIZE_TRAIN, 
@@ -48,7 +45,6 @@ class LoadData:
             shuffle=False
         )
 
-        # Load the CIFAR-10 test set
         self.test_set = torchvision.datasets.CIFAR10(
             self.data_path, 
             train=False, 
@@ -56,7 +52,6 @@ class LoadData:
             transform=self.transforms
         )
 
-        # Create a data loader for the test set
         test_loader = DataLoader(
             self.test_set, 
             batch_size=self.BATCH_SIZE_TEST, 
