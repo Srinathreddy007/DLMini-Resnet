@@ -4,10 +4,12 @@ import torch
 from torch.utils.data import DataLoader, Subset
 
 class LoadData:
-    def __init__(self, data_path, *args, **kwargs):
+    def __init__(self, data_path, batch_size_train, validation_split, *args, **kwargs):
         self.data_path = data_path
         if os.path.isabs(self.data_path):
             self.data_path = os.path.abspath(self.data_path)
+        self.BATCH_SIZE_TRAIN = batch_size_train
+        self.valid_split = validation_split
         self._init_vars()
   
     def _init_vars(self):
@@ -15,8 +17,6 @@ class LoadData:
             torchvision.transforms.ToTensor(),
             torchvision.transforms.Normalize((0.1307,), (0.3081,))
         ])
-        self.valid_split = 0.1
-        self.BATCH_SIZE_TRAIN = 50
         self.BATCH_SIZE_TEST = 1000
   
     def _get_data(self):
@@ -70,4 +70,3 @@ class LoadData:
             label = self.train_set.classes[index]
             self.class_count[label] = self.class_count.get(label, 0) + 1
         print(f'Class Count: {self.class_count}')
-
