@@ -1,5 +1,3 @@
-
-
 from typing import Type, Union, List, Optional, Callable, Any
 from utils import Conv
 from BasicBlock import *
@@ -78,4 +76,3 @@ class ResNet(nn.Module):
     out = torch.flatten(out, 1)
     out = self.fc(out)
     return out
-
