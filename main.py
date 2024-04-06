@@ -10,6 +10,8 @@ import argparse
 
 def main(
         data_path: str,
+        batch_size_train: int, 
+        validation_split: float, 
 
         blocks: Type[Union[BasicBlock, BottleNeck]],
         num_blocks: List[int],
@@ -55,7 +57,7 @@ def main(
         print("No GPU available using CPU")
     
     print("Loading Data....")
-    data = LoadData(data_path)
+    data = LoadData(data_path, batch_size_train, validation_split)
     train_loader, val_loader, test_loader = data._get_data()
     data.__get_length__()
     data._get_class_length()
@@ -89,6 +91,8 @@ def main(
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('--data_path', default='./Data/', type=str)
+    parser.add_argument('--batch_size_train', default=50, type=int)
+    parser.add_argument('--validation_split', default=0.1, type=float)
     parser.add_argument('--blocks', default=[BasicBlock, BasicBlock, BasicBlock, BasicBlock], type=List[Type[Union[BasicBlock, BottleNeck]]])
     parser.add_argument('--num_blocks', default=[2, 2, 2, 2],type=List[int])
     parser.add_argument('--channel_size', default=[64, 128, 232, 268], type=List[int])
@@ -106,6 +110,8 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     main(args.data_path, 
+         args.batch_size_train,
+         args.validation_split,
          args.blocks, 
          args.num_blocks, 
          args.channel_size, 
