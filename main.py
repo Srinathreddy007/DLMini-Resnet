@@ -5,6 +5,7 @@ from BottleNeck import BottleNeck
 from torchinfo import summary
 from torch import optim
 import torch.nn as nn
+from typing import Type, Union, List, Optional, Callable, Any
 import argparse
 
 def main(
@@ -24,6 +25,7 @@ def main(
         momentum: Optional[float], # 0.9
         weight_decay: Optional[float] ,# 5e-04
         option: str,
+        model_name: str,
 
 ) -> None:
     train = Train() 
@@ -67,6 +69,7 @@ def main(
 
     print("Training....")
     print()
+    print(type(epochs))
     train.run( 
         epochs=epochs,
         model=model,
@@ -77,6 +80,7 @@ def main(
         trainloader=train_loader,
         testloader=val_loader,
         option=option,
+        model_name=model_name,
         early_stopper=early_stopper,
     )
               
@@ -84,19 +88,20 @@ def main(
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument('--data_path', default='./Data/')
-    parser.add_argument('--blocks', default=[BasicBlock, BasicBlock, BasicBlock, BasicBlock])
-    parser.add_argument('--num_blocks', default=[2, 2, 2, 2])
-    parser.add_argument('--channel_size', default=[64, 128, 232, 268])
-    parser.add_argument('--conv_kernel_size', default=3)
-    parser.add_argument('--he_init', default=False)
-    parser.add_argument('--zero_init_residual', default=False)
-    parser.add_argument('--min_delta', default=0.001)
-    parser.add_argument('--epochs', default=20)
-    parser.add_argument('--learning_rate', default=0.01)
-    parser.add_argument('--momentum', default=0.9)
-    parser.add_argument('--weight_decay', default=5e-04)
-    parser.add_argument('--option', default='Validation')
+    parser.add_argument('--data_path', default='./Data/', type=str)
+    parser.add_argument('--blocks', default=[BasicBlock, BasicBlock, BasicBlock, BasicBlock], type=List[Type[Union[BasicBlock, BottleNeck]]])
+    parser.add_argument('--num_blocks', default=[2, 2, 2, 2],type=List[int])
+    parser.add_argument('--channel_size', default=[64, 128, 232, 268], type=List[int])
+    parser.add_argument('--conv_kernel_size', default=3, type=int)
+    parser.add_argument('--he_init', default=False, type=bool)
+    parser.add_argument('--zero_init_residual', default=False, type=bool)
+    parser.add_argument('--min_delta', default=0.001, type=float)
+    parser.add_argument('--epochs', default=2, type=int)
+    parser.add_argument('--learning_rate', default=0.01, type=float)
+    parser.add_argument('--momentum', default=0.9, type=float)
+    parser.add_argument('--weight_decay', default=5e-04, type=float)
+    parser.add_argument('--option', default='Validation', type=str)
+    parser.add_argument('--model_name',type=str)
 
     args = parser.parse_args()
 
@@ -112,5 +117,6 @@ if __name__ == "__main__":
          args.learning_rate, 
          args.momentum, 
          args.weight_decay,
-         args.option
+         args.option,
+         args.model_name
         )
