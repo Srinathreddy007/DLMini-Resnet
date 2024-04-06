@@ -2,6 +2,7 @@ import torch.nn as nn
 import matplotlib.pyplot as plt
 import seaborn as sns
 from typing import List
+import os 
 
 class Conv(nn.Module):
   def __init__(self):
@@ -70,32 +71,45 @@ class Plotter:
     @staticmethod
     def plot_train_loss(
         train_losses: List[float], 
-        epochs: List[int]
+        epochs: List[int],
+        model_name: str
         ) -> None:
         sns.lineplot(x=epochs, y=train_losses, label='Train Loss')
         plt.xlabel('Epochs')
         plt.ylabel('Loss')
         plt.title('Train Loss vs Epochs')
         plt.legend()
+
+        os.makedirs("./Plots/", exist_ok=True)
+        plt.savefig(os.path.join("./Plots/", f'train_loss_ResNet-{model_name}.png'))
+
         plt.show()
+
+
 
     @staticmethod
     def plot_train_accuracy( 
         train_accuracies: List[float], 
-        epochs: List[int]
+        epochs: List[int],
+        model_name: str
         ) -> None:
         sns.lineplot(x=epochs, y=train_accuracies, label='Train Accuracy')
         plt.xlabel('Epochs')
         plt.ylabel('Accuracy')
         plt.title('Train Accuracy vs Epochs')
         plt.legend()
+
+        os.makedirs("./Plots/", exist_ok=True)
+        plt.savefig(os.path.join("./Plots/", f'train_accuracy_ResNet-{model_name}.png'))
+
         plt.show()
 
     @staticmethod
     def plot_loss_comparison(
         train_losses: List[float], 
         val_losses: List[float], 
-        epochs: List[int]
+        epochs: List[int], 
+        model_name: str
         ) -> None:
         sns.lineplot(x=epochs, y=train_losses, label='Train Loss')
         sns.lineplot(x=epochs, y=val_losses, label='Validation Loss')
@@ -103,13 +117,18 @@ class Plotter:
         plt.ylabel('Loss')
         plt.title('Train Loss vs Validation Loss')
         plt.legend()
+
+        os.makedirs("./Plots/", exist_ok=True)
+        plt.savefig(os.path.join("./Plots/", f'loss_ResNet-{model_name}.png'))
+
         plt.show()
 
     @staticmethod
     def plot_accuracy_comparison(
         train_accuracies: List[float], 
         val_accuracies: List[float], 
-        epochs: List[int]
+        epochs: List[int],
+        model_name: str
         ) -> None:
         sns.lineplot(x=epochs, y=train_accuracies, label='Train Accuracy')
         sns.lineplot(x=epochs, y=val_accuracies, label='Validation Accuracy')
@@ -117,4 +136,8 @@ class Plotter:
         plt.ylabel('Accuracy')
         plt.title('Train Accuracy vs Validation Accuracy')
         plt.legend()
+
+        os.makedirs("./Plots/", exist_ok=True)
+        plt.savefig(os.path.join("./Plots/", f'accuracy_ResNet-{model_name}.png'))
+
         plt.show()
