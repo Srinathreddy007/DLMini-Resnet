@@ -13,9 +13,16 @@ class LoadData:
         self._init_vars()
   
     def _init_vars(self):
-        self.transforms = torchvision.transforms.Compose([
+        self.transforms_train = torchvision.transforms.Compose([
             torchvision.transforms.ToTensor(),
-            torchvision.transforms.Normalize((0.1307,), (0.3081,))
+            torchvision.transforms.RandomHorizontalFlip(0.5),
+            torchvision.transforms.RandomCrop(32, padding=4, padding_mode='reflect'),
+            torchvision.transforms.AutoAugment(torchvision.transforms.AutoAugmentPolicy.CIFAR10),
+            torchvision.transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010))
+        ])
+        self.transforms_test = torchvision.transforms.Compose([
+            torchvision.transforms.ToTensor(),
+            torchvision.transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010))
         ])
         self.BATCH_SIZE_TEST = 1000
   
@@ -24,23 +31,23 @@ class LoadData:
             self.data_path, 
             train=True, 
             download=True,
-            transform=self.transforms
+            transform=self.transforms_train
         )
 
-        self.train_len = int(len(self.train_set) * (1 - self.valid_split))
-        train_indices = torch.arange(self.train_len)
-        val_indices = torch.arange(self.train_len, len(self.train_set))
+        train_len = int(len(self.train_set) * (1 - self.valid_split))
+        train_indices = torch.arange(train_len)
+        val_indices = torch.arange(train_len, len(self.train_set))
 
         train_subset = Subset(self.train_set, train_indices)
-        self.val_subset = Subset(self.train_set, val_indices)
+        val_subset = Subset(self.train_set, val_indices)
 
-        train_loader = DataLoader(
+        self.train_loader = DataLoader(
             train_subset, 
             batch_size=self.BATCH_SIZE_TRAIN, 
             shuffle=True
         )
-        val_loader = DataLoader(
-            self.val_subset, 
+        self.val_loader = DataLoader(
+            val_subset, 
             batch_size=self.BATCH_SIZE_TEST, 
             shuffle=False
         )
@@ -49,20 +56,21 @@ class LoadData:
             self.data_path, 
             train=False, 
             download=True,
-            transform=self.transforms
+            transform=self.transforms_test
         )
 
-        test_loader = DataLoader(
+        self.test_loader = DataLoader(
             self.test_set, 
             batch_size=self.BATCH_SIZE_TEST, 
             shuffle=True
         )
 
-        return train_loader, val_loader, test_loader  
+        return self.train_loader, self.val_loader, self.test_loader  
+    
     def __get_length__(self):
-        print(f'Length of Train Data: {self.train_len}\n'
-              f'Length of Validation Data: {len(self.val_subset)}\n'
-              f'Length of Test Data: {len(self.test_set)}')
+        print(f'Length of Train Data: {len(self.train_loader)}\n'
+              f'Length of Validation Data: {len(self.val_loader)}\n'
+              f'Length of Test Data: {len(self.test_loader)}')
   
     def _get_class_length(self):
         self.class_count = {}
