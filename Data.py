@@ -14,10 +14,10 @@ class LoadData:
   
     def _init_vars(self):
         self.transforms_train = torchvision.transforms.Compose([
-            torchvision.transforms.ToTensor(),
             torchvision.transforms.RandomHorizontalFlip(0.5),
             torchvision.transforms.RandomCrop(32, padding=4, padding_mode='reflect'),
             torchvision.transforms.AutoAugment(torchvision.transforms.AutoAugmentPolicy.CIFAR10),
+            torchvision.transforms.ToTensor(),
             torchvision.transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010))
         ])
         self.transforms_test = torchvision.transforms.Compose([
@@ -34,12 +34,12 @@ class LoadData:
             transform=self.transforms_train
         )
 
-        train_len = int(len(self.train_set) * (1 - self.valid_split))
-        train_indices = torch.arange(train_len)
-        val_indices = torch.arange(train_len, len(self.train_set))
+        self.train_len = int(len(self.train_set) * (1 - self.valid_split))
+        train_indices = torch.arange(self.train_len)
+        val_indices = torch.arange(self.train_len, len(self.train_set))
 
         train_subset = Subset(self.train_set, train_indices)
-        val_subset = Subset(self.train_set, val_indices)
+        self.val_subset = Subset(self.train_set, val_indices)
 
         self.train_loader = DataLoader(
             train_subset, 
@@ -47,7 +47,7 @@ class LoadData:
             shuffle=True
         )
         self.val_loader = DataLoader(
-            val_subset, 
+            self.val_subset, 
             batch_size=self.BATCH_SIZE_TEST, 
             shuffle=False
         )
@@ -68,9 +68,9 @@ class LoadData:
         return self.train_loader, self.val_loader, self.test_loader  
     
     def __get_length__(self):
-        print(f'Length of Train Data: {len(self.train_loader)}\n'
-              f'Length of Validation Data: {len(self.val_loader)}\n'
-              f'Length of Test Data: {len(self.test_loader)}')
+        print(f'Length of Train Data: {self.train_len}\n'
+              f'Length of Validation Data: {len(self.val_subset)}\n'
+              f'Length of Test Data: {len(self.test_set)}')
   
     def _get_class_length(self):
         self.class_count = {}
