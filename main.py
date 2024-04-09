@@ -7,18 +7,19 @@ from torch import optim
 import torch.nn as nn
 from typing import Type, Union, List, Optional, Callable, Any
 import argparse
+import json
 
 def main(
         data_path: str,
-        batch_size_train: int, 
-        validation_split: float, 
+        batch_size_train: int,
+        validation_split: float,
 
         blocks: Type[Union[BasicBlock, BottleNeck]],
         num_blocks: List[int],
         channel_size: List[int],
         conv_kernel_size: int,
         he_init: bool,
-        zero_init_residual: bool, 
+        zero_init_residual: bool,
 
         min_delta: float,
 
@@ -30,21 +31,21 @@ def main(
         model_name: str,
 
 ) -> None:
-    train = Train() 
+    train = Train()
 
     print('Loading Model....')
     model = ResNet(
-        block=blocks, 
-        num_blocks=num_blocks, 
-        channel_size=channel_size, 
+        block=blocks,
+        num_blocks=num_blocks,
+        channel_size=channel_size,
         conv_kernel_size=conv_kernel_size,
         he_init=he_init,
         zero_init_residual=zero_init_residual
         )
-    
+
     if summary(model).total_params > 5e+06:
         exit("Total Number of Parameters greater than 5 Million")
-    
+
     print("Checking for GPU...")
     if torch.has_mps and torch.backends.mps.is_built() and torch.backends.mps.is_available():  # Remove if you don't have MacBook
         device = "mps:0"
@@ -55,7 +56,7 @@ def main(
     else:
         device = "cpu"
         print("No GPU available using CPU")
-    
+
     print("Loading Data....")
     data = LoadData(data_path, batch_size_train, validation_split)
     train_loader, val_loader, test_loader = data._get_data()
@@ -72,7 +73,7 @@ def main(
     print("Training....")
     print()
     print(type(epochs))
-    train.run( 
+    train.run(
         epochs=epochs,
         model=model,
         device=device,
@@ -85,7 +86,7 @@ def main(
         model_name=model_name,
         early_stopper=early_stopper,
     )
-              
+
 
 
 if __name__ == "__main__":
@@ -94,8 +95,8 @@ if __name__ == "__main__":
     parser.add_argument('--batch_size_train', default=50, type=int)
     parser.add_argument('--validation_split', default=0.1, type=float)
     parser.add_argument('--blocks', default=[BasicBlock, BasicBlock, BasicBlock, BasicBlock], type=List[Type[Union[BasicBlock, BottleNeck]]])
-    parser.add_argument('--num_blocks', default=[2, 2, 2, 2],type=List[int])
-    parser.add_argument('--channel_size', default=[64, 128, 232, 268], type=List[int])
+    parser.add_argument('--num_blocks', default='[2, 2, 2, 2]',type=str)
+    parser.add_argument('--channel_size', default='[64, 128, 232, 268]', type=str)
     parser.add_argument('--conv_kernel_size', default=3, type=int)
     parser.add_argument('--he_init', default=False, type=bool)
     parser.add_argument('--zero_init_residual', default=False, type=bool)
@@ -108,20 +109,22 @@ if __name__ == "__main__":
     parser.add_argument('--model_name',type=str)
 
     args = parser.parse_args()
+    args.channel_size = json.loads(args.channel_size)
+    args.num_blocks = json.loads(args.num_blocks)
 
-    main(args.data_path, 
+    main(args.data_path,
          args.batch_size_train,
          args.validation_split,
-         args.blocks, 
-         args.num_blocks, 
-         args.channel_size, 
-         args.conv_kernel_size, 
+         args.blocks,
+         args.num_blocks,
+         args.channel_size,
+         args.conv_kernel_size,
          args.he_init,
-         args.zero_init_residual, 
-         args.min_delta, 
-         args.epochs, 
-         args.learning_rate, 
-         args.momentum, 
+         args.zero_init_residual,
+         args.min_delta,
+         args.epochs,
+         args.learning_rate,
+         args.momentum,
          args.weight_decay,
          args.option,
          args.model_name
