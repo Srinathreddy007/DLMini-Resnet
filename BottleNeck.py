@@ -32,7 +32,7 @@ class BottleNeck(nn.Module):
       self.skip = nn.Sequential()
       if stride != 1 or in_channels != out_channels * self.expansion:
             self.skip = nn.Sequential(
-                Conv.conv1x1(self.in_channels, out_channels * self.expansion, stride=stride),
+                Conv.conv1x1(in_channels, out_channels * self.expansion, stride=stride),
                 norm_layer(out_channels * self.expansion),
             )
   
