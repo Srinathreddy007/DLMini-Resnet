@@ -59,7 +59,7 @@ def main(
 
     print("Loading Data....")
     data = LoadData(data_path, batch_size_train, validation_split)
-    train_loader, val_loader, test_loader = data._get_data()
+    train_loader, val_loader, test_loader = data._get_data()# test loader
     data.__get_length__()
     data._get_class_length()
 
@@ -81,7 +81,7 @@ def main(
         optimizer=optimizer,
         scheduler=scheduler,
         trainloader=train_loader,
-        testloader=val_loader,
+        testloader=test_loader,
         option=option,
         model_name=model_name,
         early_stopper=early_stopper,
@@ -105,7 +105,7 @@ if __name__ == "__main__":
     parser.add_argument('--learning_rate', default=0.01, type=float)
     parser.add_argument('--momentum', default=0.9, type=float)
     parser.add_argument('--weight_decay', default=5e-04, type=float)
-    parser.add_argument('--option', default='Validation', type=str)
+    parser.add_argument('--option', default='Test', type=str)
     parser.add_argument('--model_name',type=str)
 
     args = parser.parse_args()
