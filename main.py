@@ -1,13 +1,13 @@
-from train import *
-from Data import *
-from BasicBlock import BasicBlock
-from BottleNeck import BottleNeck
-from torchinfo import summary
-from torch import optim
-import torch.nn as nn
-from typing import Type, Union, List, Optional, Callable, Any
-import argparse
-import json
+from train import *  # Import training utility functions
+from Data import *  # Import data loading functions
+from BasicBlock import BasicBlock  # Import BasicBlock class
+from BottleNeck import BottleNeck  # Import BottleNeck class
+from torchinfo import summary  # Import summary function to check model parameters count
+from torch import optim  # Import PyTorch optim module for optimization algorithms
+import torch.nn as nn  # Import PyTorch nn module for neural network building blocks
+from typing import Type, Union, List, Optional, Callable, Any  # Import typing for type annotations
+import argparse  # Import argparse for command-line argument parsing
+import json  # Import json for parsing string arguments
 
 def main(
         data_path: str,
@@ -21,12 +21,36 @@ def main(
         zero_init_residual: bool,
         min_delta: float,
         epochs: int,
-        learning_rate: float, # 0.01
-        momentum: Optional[float], # 0.9
-        weight_decay: Optional[float] ,# 5e-04
+        learning_rate: float,
+        momentum: Optional[float],
+        weight_decay: Optional[float],
         option: str,
         model_name: str,
 ) -> None:
+    """
+    Main function to train the ResNet model.
+
+    Args:
+        data_path (str): Path to the data directory.
+        batch_size_train (int): Batch size for training.
+        validation_split (float): Proportion of data for validation split.
+        blocks (Type[Union[BasicBlock, BottleNeck]]): Type of blocks to use in ResNet.
+        num_blocks (List[int]): Number of blocks in each layer.
+        channel_size (List[int]): Number of output channels for each layer.
+        conv_kernel_size (int): Kernel size for convolutional layers.
+        he_init (bool): Whether to use He initialization for convolutional layers.
+        zero_init_residual (bool): Whether to initialize residual connections to zero.
+        min_delta (float): Minimum delta for early stopping.
+        epochs (int): Number of epochs for training.
+        learning_rate (float): Learning rate for optimization.
+        momentum (Optional[float]): Momentum for optimization (optional).
+        weight_decay (Optional[float]): Weight decay for optimization (optional).
+        option (str): Option for training or testing.
+        model_name (str): Name of the model.
+
+    Returns:
+        None
+    """
     # Initialize the training environment
     train = Train()
 
