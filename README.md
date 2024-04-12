@@ -2,7 +2,7 @@
 <h2>Running the Code on the HPC</h2> 
 Follow these steps to run the code on a High-Performance Computing (HPC) cluster.
 
-### 1. Create a Directory in the Scratch Folder
+### 1. Navigate to the Scratch Folder
 Create a directory in the `/scratch/your_net_id/` folder. Replace `your_net_id` with your actual net ID.
 
 ```bash
