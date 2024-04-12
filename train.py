@@ -7,7 +7,7 @@ from torch.optim.optimizer import Optimizer
 import torch.nn as nn
 from typing import Type, Union, List, Optional, Callable, Any
 from utils import EarlyStopper
-from utils import Plotter  # Assuming Plotter module is imported here
+from utils import Plotter  # Plotter module is imported here
 
 class Train:
     def __init__(self):
