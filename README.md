@@ -54,6 +54,37 @@ Ensure that you have appropriate permissions and resources allocated on the HPC 
 
 The required libraries will be downloaded when you submit the `.sbatch` file. It contains a line `pip insall -r requirements.txt` that takes care of the necessary downloads. 
 
+`Note: Replace your_net_id and ENV_NAME with your actual Net ID and environment name respectively.`
+
+## Running the Code on the Local System
+### 1. Install the anaconda 2020.07 version to run without compatibility issues. 
+### 2. Clone the Git Repo
+Clone the repository using the following command: 
+``` bash
+git clone https://github.com/Srinathreddy007/DLMini-Resnet.git
+```
+### 3. Create a Conda Environment
+Navigate to destination folder. Create the conda environment using the `.yml` file provided in the repo and activate the environment.
+```bash
+conda create --name /path/to/your/folder/ENV_NAME --file gpu_env.yml
+conda activate /path/to/your/folder/ENV_NAME 
+```
+
+### 4. Install Necessary Libraries
+Run the command. The `requirements.txt` file is also provided in the repo. 
+```bash
+pip install -r requirements.txt
+```
+
+### 5. Run the Code:
+Run the `main.py` file using the command:
+```bash
+python main.py --batch_size_train=64 --num_blocks='[3, 4, 6, 3]' --channel_size='[64, 96, 128, 188]' --he_init=True --epochs=250 --learning_rate=0.01 --weight_decay=5e-04 --model_name=18_he_BN_188
+```
+
+ `Don't change the command-line arguments, as they are the parameters set for replicating the best model.`
+
+
 
 
 
