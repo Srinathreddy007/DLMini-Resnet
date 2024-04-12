@@ -47,10 +47,10 @@ def main(
         exit("Total Number of Parameters greater than 5 Million")
 
     print("Checking for GPU...")
-    if torch.has_mps and torch.backends.mps.is_built() and torch.backends.mps.is_available():  # Remove if you don't have MacBook
+    if torch.backends.mps.is_built() and torch.backends.mps.is_available():
         device = "mps:0"
         print("Device set as MPS")
-    elif torch.has_cuda and torch.cuda.is_available():
+    elif torch.backends.cuda.is_built() and torch.cuda.is_available():
         device = "cuda:0"
         print("Device set as CUDA")
     else:
