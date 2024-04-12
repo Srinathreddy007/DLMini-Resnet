@@ -1,0 +1,9 @@
+torch
+torchvision
+torchinfo
+numpy
+typing
+matplotlib
+seaborn
+tqdm
+argparse
