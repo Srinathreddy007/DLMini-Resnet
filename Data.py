@@ -5,7 +5,14 @@ from torch.utils.data import DataLoader, Subset
 
 class LoadData:
     def __init__(self, data_path, batch_size_train, validation_split, *args, **kwargs):
-        # Initialize with path to data, batch size for training, and proportion for validation split
+        """
+        Initialize the data loader with the given parameters.
+
+        Args:
+            data_path (str): Path to the CIFAR10 dataset.
+            batch_size_train (int): Batch size for training.
+            validation_split (float): Proportion of training data to use for validation split.
+        """
         self.data_path = data_path
         # Convert to absolute path if not already
         if os.path.isabs(self.data_path):
@@ -15,6 +22,9 @@ class LoadData:
         self._init_vars()  # Initialize additional variables and setup
   
     def _init_vars(self):
+        """
+        Initialize variables and setup transformations for data loading.
+        """
         # Define image transformations for training
         self.transforms_train = torchvision.transforms.Compose([
             torchvision.transforms.RandomHorizontalFlip(0.5),
@@ -31,6 +41,12 @@ class LoadData:
         self.BATCH_SIZE_TEST = 1000  # Larger batch size for testing
   
     def _get_data(self):
+        """
+        Load CIFAR10 dataset, split into training and validation sets, and create DataLoader instances.
+        
+        Returns:
+            tuple: DataLoader instances for training, validation, and test sets.
+        """
         # Load CIFAR10 training data with transformations
         self.train_set = torchvision.datasets.CIFAR10(
             self.data_path, 
@@ -76,13 +92,17 @@ class LoadData:
         return self.train_loader, self.val_loader, self.test_loader  # Return all data loaders
     
     def __get_length__(self):
-        # Print the length of the datasets for debugging or information
+        """
+        Print the length of the datasets for debugging or information.
+        """
         print(f'Length of Train Data: {self.train_len}\n'
               f'Length of Validation Data: {len(self.val_subset)}\n'
               f'Length of Test Data: {len(self.test_set)}')
   
     def _get_class_length(self):
-        # Calculate the number of instances per class in the training set
+        """
+        Calculate the number of instances per class in the training set and print the class count.
+        """
         self.class_count = {}
         for _, index in self.train_set:
             label = self.train_set.classes[index]
