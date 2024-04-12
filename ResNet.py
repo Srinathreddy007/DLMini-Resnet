@@ -1,7 +1,7 @@
 from typing import Type, Union, List, Optional, Callable, Any
-from utils import Conv
-from BasicBlock import *
-from BottleNeck import *
+from utils import Conv  # Import utility functions
+from BasicBlock import *  # Import BasicBlock class
+from BottleNeck import *  # Import BottleNeck class
 
 class ResNet(nn.Module):
     def __init__(
@@ -15,6 +15,19 @@ class ResNet(nn.Module):
         he_init: bool = False,
         norm_layer: Optional[Callable[..., nn.Module]] = None   
     ) -> None:
+        """
+        ResNet constructor.
+
+        Args:
+            block (List[Type[Union[BasicBlock, BottleNeck]]]): List of block types used in ResNet.
+            num_blocks (List[int]): List of numbers of blocks in each layer.
+            channel_size (List[int]): List of channel sizes for each layer.
+            conv_kernel_size (int): Kernel size for the initial convolutional layer.
+            num_classes (int): Number of output classes (default is 10 for CIFAR10).
+            zero_init_residual (bool): If True, initialize residual connections to zero (default is False).
+            he_init (bool): If True, use He initialization for convolutional layers (default is False).
+            norm_layer (Optional[Callable[..., nn.Module]]): Normalization layer to use (default is BatchNorm2d).
+        """
         super().__init__()
         # Default to BatchNorm2d if no norm_layer is provided
         if norm_layer is None:
@@ -42,19 +55,19 @@ class ResNet(nn.Module):
 
         # Initialize weights using He initialization for convolutional layers
         if he_init:
-          for m in self.modules():
-            if isinstance(m, nn.Conv2d):
-                nn.init.kaiming_normal_(m.weight, mode='fan_out', nonlinearity='relu')
-            elif isinstance(m, (nn.BatchNorm2d, nn.GroupNorm)):
-                nn.init.constant_(m.weight, 1)
-                nn.init.constant_(m.bias, 0)
-    
-          if zero_init_residual:
             for m in self.modules():
-              if isinstance(m, BottleNeck) and m.bn3.weight is not None:
-                nn.init.constant_(m.bn3.weight, 0)  # type: ignore[arg-type]
-              elif isinstance(m, BasicBlock) and m.bn2.weight is not None:
-                nn.init.constant_(m.bn2.weight, 0)  # type: ignore[arg-type]
+                if isinstance(m, nn.Conv2d):
+                    nn.init.kaiming_normal_(m.weight, mode='fan_out', nonlinearity='relu')
+                elif isinstance(m, (nn.BatchNorm2d, nn.GroupNorm)):
+                    nn.init.constant_(m.weight, 1)
+                    nn.init.constant_(m.bias, 0)
+    
+        if zero_init_residual:
+            for m in self.modules():
+                if isinstance(m, BottleNeck) and m.bn3.weight is not None:
+                    nn.init.constant_(m.bn3.weight, 0)  
+                elif isinstance(m, BasicBlock) and m.bn2.weight is not None:
+                    nn.init.constant_(m.bn2.weight, 0)  
 
     def _make_layer_(
         self,
@@ -63,7 +76,18 @@ class ResNet(nn.Module):
         num_blocks: int,
         stride: int,
     ) -> nn.Sequential:
-        # Build layers of blocks for the network
+        """
+        Create a layer of blocks for the network.
+
+        Args:
+            block (Type[Union[BasicBlock, BottleNeck]]): Type of block to use.
+            out_channels (int): Number of output channels for the layer.
+            num_blocks (int): Number of blocks in the layer.
+            stride (int): Stride for the layer.
+
+        Returns:
+            nn.Sequential: Sequential container of blocks.
+        """
         norm_layer = self.norm_layer
         strides = [stride] + [1]*(num_blocks-1)
         layers = []
@@ -73,7 +97,15 @@ class ResNet(nn.Module):
         return nn.Sequential(*layers)
     
     def forward(self, x: torch.Tensor) -> torch.Tensor:
-        # Define the forward pass
+        """
+        Forward pass through the network.
+
+        Args:
+            x (torch.Tensor): Input tensor.
+
+        Returns:
+            torch.Tensor: Output tensor.
+        """
         out = self.relu(self.bn1(self.conv1(x)))
         out = self.layer1(out)
         out = self.layer2(out)
