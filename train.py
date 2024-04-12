@@ -44,7 +44,7 @@ class Train:
         print("########################################################################################################################")
         print(f'Epoch: {epoch + 1} | Train Loss: {train_loss / (batch + 1):.2f} | Train Accuracy: {train_accuracy:.2f} | Time Elapsed: {end - start:.2f}sec')
 
-        return train_accuracy, train_loss
+        return train_accuracy, train_loss/(batch + 1)
 
     
 
@@ -88,7 +88,7 @@ class Train:
             print("Saved Model")
             self.best_acc = test_accuracy
 
-        return test_accuracy, test_loss
+        return test_accuracy, test_loss/(batch + 1)
 
     
     def run(
