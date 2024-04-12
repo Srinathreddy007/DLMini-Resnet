@@ -18,7 +18,7 @@ git clone https://github.com/Srinathreddy007/DLMini-Resnet.git
 ### 3. Create a Conda Environment
 Create a conda environment in the scratch folder and initialize it:
 ```bash
-conda create --name /scratch/your_net_id/ENV_NAME
+conda create --name /scratch/your_net_id/ENV_NAME python=3.9
 conda init
 ```
 
@@ -52,7 +52,7 @@ sbatch submit.sbatch
 ```
 Ensure that you have appropriate permissions and resources allocated on the HPC cluster before submitting the job.
 
-
+The required libraries will be downloaded when you submit the `.sbatch` file. It contains a line `pip insall -r requirements.txt` that takes care of the necessary downloads. 
 
 
 
