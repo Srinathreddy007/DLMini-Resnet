@@ -13,26 +13,24 @@ def main(
         data_path: str,
         batch_size_train: int,
         validation_split: float,
-
         blocks: Type[Union[BasicBlock, BottleNeck]],
         num_blocks: List[int],
         channel_size: List[int],
         conv_kernel_size: int,
         he_init: bool,
         zero_init_residual: bool,
-
         min_delta: float,
-
         epochs: int,
         learning_rate: float, # 0.01
         momentum: Optional[float], # 0.9
         weight_decay: Optional[float] ,# 5e-04
         option: str,
         model_name: str,
-
 ) -> None:
+    # Initialize the training environment
     train = Train()
 
+    # Load the model based on ResNet architecture with specified configurations
     print('Loading Model....')
     model = ResNet(
         block=blocks,
@@ -41,11 +39,13 @@ def main(
         conv_kernel_size=conv_kernel_size,
         he_init=he_init,
         zero_init_residual=zero_init_residual
-        )
+    )
 
+    # Check model parameters count and exit if exceeds limit
     if summary(model).total_params > 5e+06:
         exit("Total Number of Parameters greater than 5 Million")
 
+    # Determine the best available device (GPU or CPU)
     print("Checking for GPU...")
     if torch.backends.mps.is_built() and torch.backends.mps.is_available():
         device = "mps:0"
@@ -57,22 +57,24 @@ def main(
         device = "cpu"
         print("No GPU available using CPU")
 
+    # Load the data and create data loaders
     print("Loading Data....")
     data = LoadData(data_path, batch_size_train, validation_split)
-    train_loader, val_loader, test_loader = data._get_data()# test loader
+    train_loader, val_loader, test_loader = data._get_data()
     data.__get_length__()
     data._get_class_length()
 
+    # Set training parameters
     print('Setting Parameters')
     criterion = nn.CrossEntropyLoss()
-    optimizer = optim.SGD(model.parameters(), lr = learning_rate, momentum = momentum, weight_decay = weight_decay)
-    scheduler = optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max = 200)
-
+    optimizer = optim.SGD(model.parameters(), lr=learning_rate, momentum=momentum, weight_decay=weight_decay)
+    scheduler = optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=200)
     early_stopper = EarlyStopper(min_delta)
 
+    # Start training process
     print("Training....")
     print()
-    print(type(epochs))
+    print(type(epochs))  # Debugging statement to confirm data type of epochs
     train.run(
         epochs=epochs,
         model=model,
@@ -87,15 +89,14 @@ def main(
         early_stopper=early_stopper,
     )
 
-
-
+# Command-line argument parsing
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('--data_path', default='./Data/', type=str)
     parser.add_argument('--batch_size_train', default=50, type=int)
     parser.add_argument('--validation_split', default=0.1, type=float)
     parser.add_argument('--blocks', default=[BasicBlock, BasicBlock, BasicBlock, BasicBlock], type=List[Type[Union[BasicBlock, BottleNeck]]])
-    parser.add_argument('--num_blocks', default='[2, 2, 2, 2]',type=str)
+    parser.add_argument('--num_blocks', default='[2, 2, 2, 2]', type=str)
     parser.add_argument('--channel_size', default='[64, 128, 232, 268]', type=str)
     parser.add_argument('--conv_kernel_size', default=3, type=int)
     parser.add_argument('--he_init', default=False, type=bool)
@@ -106,26 +107,27 @@ if __name__ == "__main__":
     parser.add_argument('--momentum', default=0.9, type=float)
     parser.add_argument('--weight_decay', default=5e-04, type=float)
     parser.add_argument('--option', default='Test', type=str)
-    parser.add_argument('--model_name',type=str)
+    parser.add_argument('--model_name', type=str)
 
+    # Parse arguments, update configurations, and execute the main function
     args = parser.parse_args()
     args.channel_size = json.loads(args.channel_size)
     args.num_blocks = json.loads(args.num_blocks)
-
-    main(args.data_path,
-         args.batch_size_train,
-         args.validation_split,
-         args.blocks,
-         args.num_blocks,
-         args.channel_size,
-         args.conv_kernel_size,
-         args.he_init,
-         args.zero_init_residual,
-         args.min_delta,
-         args.epochs,
-         args.learning_rate,
-         args.momentum,
-         args.weight_decay,
-         args.option,
-         args.model_name
-        )
+    main(
+        args.data_path,
+        args.batch_size_train,
+        args.validation_split,
+        args.blocks,
+        args.num_blocks,
+        args.channel_size,
+        args.conv_kernel_size,
+        args.he_init,
+        args.zero_init_residual,
+        args.min_delta,
+        args.epochs,
+        args.learning_rate,
+        args.momentum,
+        args.weight_decay,
+        args.option,
+        args.model_name
+    )
