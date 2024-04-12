@@ -33,7 +33,7 @@ Change the line `--mail-user ` to receive updates about the model status:
 ```bash
 #SBATCH --mail-user=netid@nyu.edu
 ```
-In the `.sbatch` file change the path to navigate to the folder:
+In the `.sbatch` file, change the path to navigate to the folder:
 ```bash
 cd /scratch/your_net_id/DLMini-Resnet
 ```
@@ -58,15 +58,22 @@ The required libraries will be downloaded when you submit the `.sbatch` file. It
 
 ## Running the Code on the Local System
 ### 1. Install the anaconda 2020.07 version to run without compatibility issues. 
+
 ### 2. Clone the Git Repo
 Clone the repository using the following command: 
 ``` bash
 git clone https://github.com/Srinathreddy007/DLMini-Resnet.git
 ```
 ### 3. Create a Conda Environment
-Navigate to destination folder. Create the conda environment using the `.yml` file provided in the repo and activate the environment.
+Navigate to the destination folder. Create the conda environment using the `.yml` file provided in the repo and activate the environment.
 ```bash
 conda create --name /path/to/your/folder/ENV_NAME --file gpu_env.yml
+conda activate /path/to/your/folder/ENV_NAME 
+```
+If you can't download the 2020.07 version, then download the latest version but don't use the `.yml` file to create the environment 
+Then navigate to the destination folder. Create the conda environment with `python=3.9`
+```bash
+conda create --name /path/to/your/folder/ENV_NAME python=3.9
 conda activate /path/to/your/folder/ENV_NAME 
 ```
 
