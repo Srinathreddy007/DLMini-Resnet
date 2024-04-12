@@ -70,7 +70,7 @@ Navigate to the destination folder. Create the conda environment using the `.yml
 conda create --name /path/to/your/folder/ENV_NAME --file gpu_env.yml
 conda activate /path/to/your/folder/ENV_NAME 
 ```
-If you can't download the 2020.07 version, then download the latest version but don't use the `.yml` file to create the environment 
+If you can't download the 2020.07 version, then download the latest version but don't use the `.yml` file to create the environment </br>
 Then navigate to the destination folder. Create the conda environment with `python=3.9`
 ```bash
 conda create --name /path/to/your/folder/ENV_NAME python=3.9
