@@ -1,7 +1,7 @@
 import torch
 import torch.nn as nn
 from typing import Type, Union, List, Optional, Callable, Any
-from utils import Conv 
+from utils import Conv # Contains the Code to conv1x1 and conv3x3 functions
 
 class BasicBlock(nn.Module):
     expansion: int = 1  # expansion factor for channels in residual connections
