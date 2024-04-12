@@ -9,7 +9,7 @@
 #SBATCH --job-name=dlmp
 #SBATCH --mem=4GB
 
-#SBATCH --gres=gpu:1
+#SBATCH --gres=gpu:v100:1
 
 #SBATCH --mail-type=all
 #SBATCH --mail-user=ap8638@nyu.edu
@@ -21,4 +21,4 @@ cd /scratch/ap8638/DL-MiniProject/
 source activate gpu
 pip install -r requirements.txt
 
-python main.py --batch_size_train=256 --num_blocks='[2, 3, 2, 2]' --channel_size='[64, 128, 192, 256]' --zero_init_residual=True --epochs=90 --learning_rate=0.001 --weight_decay=1e-02 --model_name=18_zero_BB_256_AdamW
+python main.py --batch_size_train=64 --num_blocks='[3, 4, 6, 3]' --channel_size='[64, 96, 128, 188]' --he_init=True --epochs=250 --learning_rate=0.01 --weight_decay=5e-04 --model_name=18_he_BN_188
