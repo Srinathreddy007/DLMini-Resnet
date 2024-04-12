@@ -16,7 +16,19 @@ class Conv(nn.Module):
         stride: int = 1, 
         padding: int = 1
         ) -> nn.Conv2d:
-        # Defines a 3x3 convolutional layer without bias
+        """
+        Defines a 3x3 convolutional layer without bias.
+
+        Args:
+            in_channels (int): Number of input channels.
+            out_channels (int): Number of output channels.
+            kernel_size (int): Size of the convolutional kernel. Default is 3.
+            stride (int): Stride of the convolution. Default is 1.
+            padding (int): Padding size. Default is 1.
+
+        Returns:
+            nn.Conv2d: 3x3 convolutional layer.
+        """
         return nn.Conv2d(
            in_channels, 
            out_channels,
@@ -33,7 +45,18 @@ class Conv(nn.Module):
         kernel_size: int = 1, 
         stride: int = 1
         ) -> nn.Conv2d:
-        # Defines a 1x1 convolutional layer without bias
+        """
+        Defines a 1x1 convolutional layer without bias.
+
+        Args:
+            in_channels (int): Number of input channels.
+            out_channels (int): Number of output channels.
+            kernel_size (int): Size of the convolutional kernel. Default is 1.
+            stride (int): Stride of the convolution. Default is 1.
+
+        Returns:
+            nn.Conv2d: 1x1 convolutional layer.
+        """
         return nn.Conv2d(
            in_channels, 
            out_channels, 
@@ -48,7 +71,13 @@ class EarlyStopper:
           patience: int = 1, 
           min_delta: int = 0
           ) -> None:
-        # Initializes the early stopper with patience and minimum delta for loss improvement
+        """
+        Initializes the early stopper.
+
+        Args:
+            patience (int): Number of epochs to wait for improvement before early stopping. Default is 1.
+            min_delta (int): Minimum change in loss for improvement. Default is 0.
+        """
         self.patience = patience
         self.min_delta = min_delta
         self.counter = 0
@@ -58,7 +87,15 @@ class EarlyStopper:
           self, 
           validation_loss: float
           ) -> bool:
-        # Determine if training should be stopped early based on validation loss performance
+        """
+        Determines if training should be stopped early based on validation loss performance.
+
+        Args:
+            validation_loss (float): Validation loss.
+
+        Returns:
+            bool: True if early stopping criteria met, False otherwise.
+        """
         if validation_loss < self.min_validation_loss:
             self.counter = 0
         elif validation_loss > (self.min_validation_loss + self.min_delta):
@@ -78,7 +115,14 @@ class Plotter:
         epochs: List[int],
         model_name: str
         ) -> None:
-        # Plots training loss over epochs
+        """
+        Plots training loss over epochs.
+
+        Args:
+            train_losses (List[float]): List of training losses.
+            epochs (List[int]): List of epoch numbers.
+            model_name (str): Name of the model.
+        """
         sns.lineplot(x=epochs, y=train_losses, label='Train Loss')
         plt.xlabel('Epochs')
         plt.ylabel('Loss')
@@ -96,7 +140,14 @@ class Plotter:
         epochs: List[int],
         model_name: str
         ) -> None:
-        # Plots training accuracy over epochs
+        """
+        Plots training accuracy over epochs.
+
+        Args:
+            train_accuracies (List[float]): List of training accuracies.
+            epochs (List[int]): List of epoch numbers.
+            model_name (str): Name of the model.
+        """
         sns.lineplot(x=epochs, y=train_accuracies, label='Train Accuracy')
         plt.xlabel('Epochs')
         plt.ylabel('Accuracy')
@@ -115,7 +166,15 @@ class Plotter:
         epochs: List[int], 
         model_name: str
         ) -> None:
-        # Compares training and Test loss over epochs
+        """
+        Compares training and test loss over epochs.
+
+        Args:
+            train_losses (List[float]): List of training losses.
+            val_losses (List[float]): List of validation losses.
+            epochs (List[int]): List of epoch numbers.
+            model_name (str): Name of the model.
+        """
         sns.lineplot(x=epochs, y=train_losses, label='Train Loss')
         sns.lineplot(x=epochs, y=val_losses, label='Test Loss')
         plt.xlabel('Epochs')
@@ -135,7 +194,15 @@ class Plotter:
         epochs: List[int],
         model_name: str
         ) -> None:
-        # Compares training and Test accuracy over epochs
+        """
+        Compares training and test accuracy over epochs.
+
+        Args:
+            train_accuracies (List[float]): List of training accuracies.
+            val_accuracies (List[float]): List of validation accuracies.
+            epochs (List[int]): List of epoch numbers.
+            model_name (str): Name of the model.
+        """
         sns.lineplot(x=epochs, y=train_accuracies, label='Train Accuracy')
         sns.lineplot(x=epochs, y=val_accuracies, label='Test Accuracy')
         plt.xlabel('Epochs')
