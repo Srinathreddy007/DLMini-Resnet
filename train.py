@@ -1,13 +1,13 @@
 from time import time
 from tqdm import tqdm
-from Data import *
-from ResNet import ResNet
+from Data import *  # Data module contains DataLoader
+from ResNet import ResNet  # ResNet module is imported here
 import torch
 from torch.optim.optimizer import Optimizer
 import torch.nn as nn
 from typing import Type, Union, List, Optional, Callable, Any
 from utils import EarlyStopper
-from utils import Plotter 
+from utils import Plotter  # Assuming Plotter module is imported here
 
 class Train:
     def __init__(self):
@@ -23,6 +23,20 @@ class Train:
         optimizer: Optimizer,
         train_loader: Type[DataLoader]
         ) -> Union[float, float]:
+        """
+        Train the model for one epoch.
+
+        Args:
+            epoch (int): Current epoch number.
+            model (ResNet): The ResNet model.
+            device (torch.device): Device to perform computations (e.g., 'cuda' or 'cpu').
+            criterion (Type[nn.Module]): Loss function.
+            optimizer (Optimizer): Optimization algorithm.
+            train_loader (Type[DataLoader]): Data loader for training set.
+
+        Returns:
+            Union[float, float]: Training accuracy and loss.
+        """
         # Initialize training parameters and set the model to training mode
         train_loss = total = correct_preds = 0  
         model.to(device)
@@ -62,6 +76,21 @@ class Train:
             option: str, 
             model_name: str
             ) -> Union[float, float]:
+        """
+        Test the model on the validation or test set.
+
+        Args:
+            epoch (int): Current epoch number.
+            model (ResNet): The ResNet model.
+            device (torch.device): Device to perform computations (e.g., 'cuda' or 'cpu').
+            criterion (Type[nn.Module]): Loss function.
+            test_loader (Type[DataLoader]): Data loader for validation or test set.
+            option (str): Option for validation or test (e.g., 'Validation' or 'Test').
+            model_name (str): Name of the model.
+
+        Returns:
+            Union[float, float]: Validation or test accuracy and loss.
+        """
         # Initialize testing parameters and set model to evaluation mode
         test_loss = correct_preds = total = 0
         start = time()  # Record the start time
@@ -110,6 +139,23 @@ class Train:
             early_stopper: EarlyStopper = EarlyStopper(),
             patience: int = 5,
             ):
+        """
+        Run the training and testing process.
+
+        Args:
+            epochs (int): Number of epochs.
+            model (ResNet): The ResNet model.
+            device (torch.device): Device to perform computations (e.g., 'cuda' or 'cpu').
+            criterion (Type[nn.Module]): Loss function.
+            optimizer (Optimizer): Optimization algorithm.
+            scheduler (torch.optim.lr_scheduler): Learning rate scheduler.
+            trainloader (Type[DataLoader]): Data loader for training set.
+            testloader (Type[DataLoader]): Data loader for validation or test set.
+            option (str): Option for validation or test (e.g., 'Validation' or 'Test').
+            model_name (str): Name of the model.
+            early_stopper (EarlyStopper): Early stopping mechanism.
+            patience (int): Number of epochs to wait for improvement before early stopping.
+        """
         # Manage the training and testing process across multiple epochs
         train_loss_history = []
         train_acc_history = []
