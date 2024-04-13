@@ -98,7 +98,25 @@ python main.py --batch_size_train=64 --num_blocks='[3, 4, 6, 3]' --channel_size=
   <li>Akash Peddaputha (ap8638)</li>
   <li>Asad Anjum(aa12277)</li>
  </ul>
+ 
+## Acknowledgements
+ We used online resources like StackOverflow, GitHub repos, Kaggle Competition entries, ChatGPT and official PyTorch, numpy, matplotlib documentation and recitations by Karthik Garimella. 
 
+## System Specifications:
+Used NYU HPC Cluster to train the model
+<ul>
+    <li>
+        <strong>NYU Greene HPC VM Specifications:</strong>
+        <ul>
+            <li><strong>CPU:</strong> 8 Virtualized Cores of Intel Xeon-Platinum 8286</li>
+            <li><strong>GPU:</strong> Nvidia Quadro RTX 8000 and Nvidia V100</li>
+            <li><strong>System Memory:</strong> 96 GB</li>
+            <li><strong>Python Version:</strong> 3.8.6</li>
+            <li><strong>CUDA Version:</strong> v11.8</li>
+            <li><strong>Torch Version:</strong> 2.2.2</li>
+        </ul>
+    </li>
+</ul>
 
 
 
