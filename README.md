@@ -1,4 +1,6 @@
-# DL-MiniProject
+# Modified ResNet: Image Classification
+## Abstract
+In an effort to better understand the development and training of a Deep learning model, we have programmed and continuously trained a Residual Network (ResNet) on a large dataset (CIFAR-10) for this project. To improve test accuracy, we continuously adjusted hyperparameters to find which combination achieved the best result, while adhering to the constraint that the model could not have more than 5 million parameters. Several iterations of the model were tested, with the most accurate results being saved and explored in the following report. The results of loss over epochs- of which there were often 150-175- as well as other important plots will be analyzed over the following sections, and the outcomes will be beneficial to navigate future Deep Learning projects that may have constraints on computational resources or the size of the model.
 <h2>Running the Code on the HPC</h2> 
 Follow these steps to run the code on a High-Performance Computing (HPC) cluster.
 
@@ -90,6 +92,13 @@ python main.py --batch_size_train=64 --num_blocks='[3, 4, 6, 3]' --channel_size=
 ```
 
  `Don't change the command-line arguments, as they are the parameters set for replicating the best model.`
+ ## Contributors:
+ <ul>
+  <li> Sai SrinathReddy Sivareddy(ss18364)</li>
+  <li>Akash Peddaputha (ap8638)</li>
+  <li>Asad Anjum(aa12277)</li>
+ </ul>
+
 
 
 
